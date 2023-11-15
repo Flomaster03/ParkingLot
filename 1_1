@@ -1,0 +1,8 @@
+fun main() {
+    val hasParked = readln()
+    val outParking = readln()
+    val justParked = readln()
+    println("$hasParked car has parked.")
+    println("$outParking car left the parking lot.")
+    println("$justParked car just parked here.")
+}
