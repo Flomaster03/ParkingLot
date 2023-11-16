@@ -1,0 +1,31 @@
+fun main() {
+    val input = readln()
+    process(input)
+}
+
+fun process(str: String) {
+    val inputList = str.split(" ")
+    when (inputList[0]) {
+        "park" -> park(inputList)
+        "leave" -> leave(inputList)
+    }
+}
+
+fun park(inputList: List<String>) {
+    for (i in ParkPlaces.place.indices) {
+        if (!ParkPlaces.place[i]) ParkPlaces.data[i] = Pair(inputList[1], inputList[2])
+        println("${inputList[2]} car parked in spot ${i + 1}.")
+        break
+    }
+}
+
+fun leave(inputList: List<String>) {
+    val number = inputList[1].toInt()
+    println(if (ParkPlaces.place[number - 1])
+        "Spot $number is free." else "There is no car in spot $number.")
+}
+
+object ParkPlaces {
+    val place = mutableListOf(true, false)
+    val data = mutableListOf<Pair<String, String>>()
+}
