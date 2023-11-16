@@ -1,0 +1,49 @@
+fun main() {
+    while (true) {
+        val input = readln()
+        if (input == "exit") break
+        process(input)
+    }
+}
+
+//обработка запроса пользователя, что сделать
+fun process(str: String) {
+    val inputList = str.split(" ")
+    when (inputList[0]) {
+        "park" -> println(park(inputList))
+        "leave" -> println(leave(inputList))
+    }
+}
+
+//парковка машины
+fun park(inputList: List<String>): String {
+    for (i in Park.place.indices) {
+        if (Park.place[i].isFree) {
+            Park.place[i] = Park.place[i].copy(isFree = false, number = inputList[1], color = inputList[2])
+            return "${inputList[2]} car parked in spot ${i + 1}."
+        }
+    }
+    return "Sorry, the parking lot is full."
+}
+
+//освобождение места на парковке
+fun leave(inputList: List<String>): String {
+    val number = inputList[1].toInt()
+    if (!Park.place[number - 1].isFree) {
+        Park.place[number - 1] = Park.place[number - 1].copy(isFree = true, number = "", color = "")
+        return "Spot $number is free."
+    }
+    return "There is no car in spot $number."
+}
+
+//список парковочных мест
+object Park {
+    var place = MutableList(20) { Place(true, "", "") }
+}
+
+//атрибуты парковочного места: свобдно ли, № припаркованной машины и ее цвет
+data class Place(
+    val isFree: Boolean,
+    val number: String,
+    val color: String
+    )
