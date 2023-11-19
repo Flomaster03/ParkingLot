@@ -1,0 +1,119 @@
+var isCreate = false
+
+fun main() {
+    while (true) {
+        val input = readln()
+        if (input == "exit") break
+        process(input)
+    }
+}
+
+//обработка запроса пользователя, что сделать
+fun process(str: String) {
+    val inputList = str.split(" ")
+    if (inputList[0].lowercase() == "create") {
+        create(inputList)
+        return
+    } else {
+        if (!isCreate) {
+            println("Sorry, a parking lot has not been created.")
+            return
+        } else {
+            when (inputList[0].lowercase()) {
+                "park" -> println(park(inputList))
+                "leave" -> println(leave(inputList))
+                "status" -> printStatus()
+                "spot_by_color" -> sortCars(inputList)
+                "reg_by_color" -> sortCars(inputList)
+                "spot_by_reg" -> sortCars(inputList)
+            }
+        }
+    }
+}
+
+//создание парковочных мест
+fun create(inputList: List<String>) {
+    if (!isCreate) {
+        val count = inputList[1].toInt()
+        if (count < 1) {
+            return
+        } else {
+            repeat(count) {
+                Park.place.add(Place(id = it + 1, isFree = true, number = "", color = ""))
+            }
+            isCreate = true
+            println("Created a parking lot with $count spots.")
+        }
+    } else {
+        Park.place.clear()
+        isCreate = false
+    }
+}
+
+//парковка машины
+fun park(inputList: List<String>): String {
+    for (i in Park.place.indices) {
+        if (Park.place[i].isFree) {
+            Park.place[i] =
+                Park.place[i].copy(isFree = false, number = inputList[1], color = inputList[2].lowercase())
+            return "${inputList[2]} car parked in spot ${Park.place[i].id}."
+        }
+    }
+    return "Sorry, the parking lot is full."
+}
+
+//освобождение места на парковке
+fun leave(inputList: List<String>): String {
+    val number = inputList[1].toInt()
+    if (!Park.place[number - 1].isFree) {
+        Park.place[number - 1] = Park.place[number - 1].copy(isFree = true, number = "", color = "")
+        return "Spot $number is free."
+    }
+    return "There is no car in spot $number."
+}
+
+//отображение припаркованных машин
+fun printStatus() {
+    val list = mutableListOf<Place>()
+    for (spot in Park.place) {
+        if (!spot.isFree) list.add(spot)
+    }
+    if (list.size == 0) println("Parking lot is empty.")
+    else list.forEach { println("${it.id} ${it.number} ${it.color}") }
+
+}
+
+//сортировка машин по запросу
+fun sortCars(inputList: List<String>) {
+    val (first, _, third) = inputList[0].split("_")
+    var str = ""
+    when {
+        third == "reg" -> {
+            str = Park.place.filter { it.number == inputList[1] }.map { it.id }.joinToString(", ")
+            println(if (str.isEmpty()) "No cars with registration number ${inputList[1]} were found." else str)
+        }
+        first == "spot" && third == "color" -> {
+            str = Park.place.filter { it.color == inputList[1].lowercase() }.map { it.id }.joinToString(", ")
+            println(if (str.isEmpty()) "No cars with color ${inputList[1]} were found." else str)
+        }
+        first == "reg" && third == "color" -> {
+            str = Park.place.filter { it.color == inputList[1].lowercase() }.map { it.number }.joinToString(", ")
+            println(if (str.isEmpty()) "No cars with color ${inputList[1]} were found." else str)
+        }
+        else -> return
+    }
+
+}
+
+//список парковочных мест
+object Park {
+    var place = mutableListOf<Place>()
+}
+
+//атрибуты парковочного места: № места (начинается с 1), свободно ли, № припаркованной машины и ее цвет
+data class Place(
+    val id: Int,
+    val isFree: Boolean,
+    val number: String,
+    val color: String
+)
