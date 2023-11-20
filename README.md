@@ -110,4 +110,45 @@ Spot 2 is free.
 3 Rs-P-N-21 Red
 > exit
 
+5_5
+
+Описание
+Теперь пришло время добавить несколько команд запроса.
+
+Команда выводит все регистрационные номера автомобилей определенного цвета, принимая цвет в качестве параметра. Цвет может быть написан прописными или строчными буквами. Например. Ответ должен содержать регистрационные номера через запятую. Порядок должен быть таким же, как и в команде. Если машин этого цвета нет, то вывод должен быть таким: .reg_by_colorreg_by_color BLACKstatusNo cars with color BLACK were found.
+
+Команда аналогична предыдущей, но выводит номера парковочных мест всех автомобилей определенного цвета.spot_by_color
+
+Команда возвращает вам номер места, где находится автомобиль, на основе его регистрационного номера, например, . Эта команда также вернет сообщение об ошибке, если ваш автомобиль не найден: Для удобства предположим, что все регистрационные номера автомобилей уникальны.spot_by_regspot_by_reg KA-01No cars with registration number KA-01 were found.
+
+Пример
+Символ представляет вводимые пользователем данные.>
+
+> spot_by_color yellow
+Sorry, a parking lot has not been created.
+> create 4
+Created a parking lot with 4 spots.
+> park KA-01-HH-9999 White
+White car parked in spot 1.
+> park KA-01-HH-3672 White
+White car parked in spot 2.
+> park Rs-P-N-21 Red
+Red car parked in spot 3.
+> park Rs-P-N-22 Red
+Red car parked in spot 4.
+> reg_by_color GREEN
+No cars with color GREEN were found.
+> reg_by_color WHITE
+KA-01-HH-9999, KA-01-HH-3672
+> spot_by_color GREEN
+No cars with color GREEN were found.
+> spot_by_color red
+3, 4
+> spot_by_reg ABC
+No cars with registration number ABC were found.
+> spot_by_reg KA-01-HH-3672
+2
+> spot_by_reg Rs-P-N-21
+3
+> exit
 
