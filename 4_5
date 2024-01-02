@@ -1,3 +1,5 @@
+var isCreate = false
+
 fun main() {
     while (true) {
         val input = readln()
@@ -29,21 +31,19 @@ fun process(str: String) {
 
 //создание парковочных мест
 fun create(inputList: List<String>) {
-    if (!isCreate) {
-        val count = inputList[1].toInt()
-        if (count < 1) {
-            return
-        } else {
-            repeat(count) {
-                Park.place.add(Place(id = it + 1, isFree = true, number = "", color = ""))
-            }
-            isCreate = true
-            println("Created a parking lot with $count spots.")
-        }
+    Park.place.clear()
+
+    val count = inputList[1].toInt()
+    if (count < 1) {
+        return
     } else {
-        Park.place.clear()
-        isCreate = false
+        repeat(count) {
+            Park.place.add(Place(id = it + 1, isFree = true, number = "", color = ""))
+        }
+        isCreate = true
+        println("Created a parking lot with $count spots.")
     }
+
 }
 
 //парковка машины
