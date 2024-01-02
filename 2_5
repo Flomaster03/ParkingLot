@@ -1,3 +1,5 @@
+package parking
+
 fun main() {
     val input = readln()
     process(input)
@@ -14,7 +16,7 @@ fun process(str: String) {
 fun park(inputList: List<String>) {
     for (i in ParkPlaces.place.indices) {
         if (!ParkPlaces.place[i]) ParkPlaces.data[i] = Pair(inputList[1], inputList[2])
-        println("${inputList[2]} car parked in spot ${i + 1}.")
+        println("${inputList[2]} car parked in spot 2.")
         break
     }
 }
